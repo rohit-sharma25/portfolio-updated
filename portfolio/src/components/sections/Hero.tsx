@@ -7,7 +7,7 @@ import { MagneticButton } from '../ui/MagneticButton';
 // Drop your photo into src/assets/ and set the path below.
 // e.g. import avatarSrc from '../assets/rohit.jpg';
 // Then set: const AVATAR_SRC = avatarSrc;
-const AVATAR_SRC: string | null = null; // null = show monogram placeholder
+const AVATAR_SRC = '/avatar.png';
 
 // Particle system
 function Particles() {

@@ -1,11 +1,12 @@
-import { useRef, useState, useMemo, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, useMemo, type MouseEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeading } from '../ui/SectionHeading';
-import { ExternalLink, Code2, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { ExternalLink, Code2, ChevronDown, ChevronUp, Star, LayoutTemplate } from 'lucide-react';
+import { JourneyModal } from '../ui/JourneyModal';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type FilterTag = 'All' | 'AI / ML' | 'Python' | 'React' | 'Full Stack' | 'Flutter' | 'UI/UX';
+type FilterTag = 'All' | 'AI / ML' | 'Python' | 'NLP' | 'React' | 'Full Stack' | 'Flutter' | 'UI/UX';
 
 interface Project {
   title: string;
@@ -15,28 +16,42 @@ interface Project {
   liveUrl: string;
   githubUrl: string;
   imageUrl?: string;
+  
+  // New Case Study Fields
+  problem?: string;
+  solution?: string;
+  role?: string;
+  challenges?: string;
+  learnings?: string;
+  futureVision?: string;
 }
 
 // ─── All Projects Data ────────────────────────────────────────────────────────
 
 const FEATURED_PROJECTS: Project[] = [
   {
-    title: 'AI Resume Screening System',
-    desc: 'Automated HR screening tool utilizing NLP to match candidate resumes against job descriptions with high accuracy.',
-    tags: ['Python', 'NLP', 'React'],
-    filterTags: ['AI / ML', 'Python', 'React'],
-    liveUrl: 'https://ai-ranking-system.streamlit.app/',
-    githubUrl: 'https://github.com/rohit-sharma25/Resume-Ranking-System',
-    imageUrl: '/AI-resume.png',
+    title: 'EDITH – Voice Assistant',
+    desc: 'Personal AI voice assistant capable of understanding and responding to spoken commands in real time using speech recognition and AI reasoning.',
+    tags: ['Voice AI', 'STT / TTS', 'Python'],
+    filterTags: ['AI / ML', 'Python'],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/rohit-sharma25/EDITH-personal-AI-voice-agent',
+    imageUrl: '/Edith.png',
+    problem: 'Off-the-shelf voice assistants are locked into closed ecosystems and lack deep customization for developer workflows.',
+    solution: 'A personalized, fully extensible AI voice assistant that integrates directly with local system tools and developer workflows.',
+    role: 'Creator & Lead Developer',
+    challenges: 'Handling background noise and maintaining context over long, multi-turn verbal conversations.',
+    learnings: 'Mastered Speech-to-Text (STT) pipelines, Text-to-Speech (TTS) synthesis, and context management in LLMs.',
+    futureVision: 'Integrating advanced agentic capabilities so EDITH can independently execute multi-step coding tasks.',
   },
   {
-    title: 'Emotion Analyzer',
-    desc: 'NLP-based emotion detection system that classifies text into emotional categories using machine learning. Trained on a custom dataset.',
-    tags: ['NLP', 'Machine Learning', 'Python'],
-    filterTags: ['AI / ML', 'Python'],
-    liveUrl: 'https://emotion-analyzer1.streamlit.app/',
-    githubUrl: 'https://github.com/rohit-sharma25/Emotion-Analyzer',
-    imageUrl: '/emotion.png',
+    title: 'SAHAYAK – Hospital AI',
+    desc: 'AI-powered patient assistance platform for AIIMS Jodhpur. Helps patients navigate hospital information through natural conversations.',
+    tags: ['FastAPI', 'Gemini AI', 'Python'],
+    filterTags: ['AI / ML', 'Python', 'NLP'],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/sahayak.png',
   },
   {
     title: 'FaceInsight 👁️',
@@ -46,32 +61,39 @@ const FEATURED_PROJECTS: Project[] = [
     liveUrl: 'https://face-recognition-git-main-rohit-s-projects-0ba6e1fb.vercel.app/',
     githubUrl: 'https://github.com/rohit-sharma25/Face-Recognition',
     imageUrl: '/face-detection.png',
+    problem: 'Real-time facial attribute analysis often requires heavy, slow models that cannot run efficiently on standard web browsers.',
+    solution: 'An optimized computer vision pipeline that detects faces and predicts attributes (age, emotion) with minimal latency.',
+    role: 'Computer Vision Engineer',
+    challenges: 'Optimizing inference speed so the application could run smoothly in real-time without dropping frames on standard hardware.',
+    learnings: 'Gained expertise in OpenCV, edge computing principles, and lightweight model architectures.',
+    futureVision: 'Developing a privacy-first edge SDK that runs entirely offline without sending frame data to a server.',
   },
   {
-    title: 'EDITH – Voice Assistant',
-    desc: 'Personal AI voice assistant capable of understanding and responding to spoken commands in real time using speech recognition and AI reasoning.',
-    tags: ['Voice AI', 'STT / TTS', 'Python'],
-    filterTags: ['AI / ML', 'Python'],
-    liveUrl: '#',
-    githubUrl: 'https://github.com/rohit-sharma25/EDITH-personal-AI-voice-agent',
-    imageUrl: '/Edith.png',
-  },
-  {
-    title: 'Virtual Customer Support',
-    desc: 'Intelligent e-commerce chatbot built with NLP and machine learning to handle customer queries with real-time conversation and intent classification.',
-    tags: ['RAG', 'NLP', 'AI/ML'],
-    filterTags: ['AI / ML', 'Python'],
+    title: 'Nike Air Jordan UI',
+    desc: 'Bold, product-centered shoe brand interface centered on dynamic visual hierarchy, clean composition, and product-focused aesthetics.',
+    tags: ['Figma', 'UI/UX'],
+    filterTags: ['UI/UX'],
     liveUrl: '#',
     githubUrl: '#',
+    imageUrl: '/Jordan.png',
   },
   {
-    title: 'AutoFixNow',
-    desc: 'Full-stack platform connecting users with nearby on-spot vehicle service providers for puncture repair and emergency roadside assistance.',
-    tags: ['Full Stack', 'React', 'Node.js'],
+    title: 'Expensifer',
+    desc: 'Web application that helps users track and manage expenses, categorize spending, and view insights into habits.',
+    tags: ['Full Stack', 'React', 'MongoDB'],
     filterTags: ['Full Stack', 'React'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
-    imageUrl: '/AutoFixNow.png',
+    imageUrl: '/expensifer.png',
+  },
+  {
+    title: 'Doom 3D Experience',
+    desc: 'Cinematic web experience built with 160+ hand-sequenced GSAP scroll animation frames for a visually immersive storytelling journey.',
+    tags: ['React', 'GSAP', 'JavaScript'],
+    filterTags: ['React'],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/doom.png',
   },
 ];
 
@@ -83,6 +105,7 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['React'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/NikeUp.png',
   },
   {
     title: 'Expensifer',
@@ -91,6 +114,7 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['Full Stack', 'React'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/expensifer.png',
   },
   {
     title: 'Doom 3D Experience',
@@ -99,6 +123,7 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['React'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/doom.png',
   },
   {
     title: 'Flappy Game',
@@ -113,9 +138,10 @@ const MORE_PROJECTS: Project[] = [
     title: 'SAHAYAK – Hospital AI',
     desc: 'AI-powered patient assistance platform for AIIMS Jodhpur. Helps patients navigate hospital information through natural conversations.',
     tags: ['FastAPI', 'Gemini AI', 'Python'],
-    filterTags: ['AI / ML', 'Python'],
+    filterTags: ['AI / ML', 'Python', 'NLP'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/sahayak.png',
   },
   {
     title: 'MediAI OS',
@@ -124,12 +150,13 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['AI / ML', 'Python'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
+    imageUrl: '/medi-1.png',
   },
   {
     title: 'Interactive Learning Platform',
     desc: 'AI-powered educational tool that transforms YouTube videos, PDFs, and documents into structured learning with gamified principles.',
     tags: ['Gradio', 'Python', 'AI APIs'],
-    filterTags: ['AI / ML', 'Python'],
+    filterTags: ['AI / ML', 'Python', 'NLP'],
     liveUrl: '#',
     githubUrl: 'https://github.com/rohit-sharma25',
   },
@@ -148,6 +175,7 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['UI/UX'],
     liveUrl: '#',
     githubUrl: '#',
+    imageUrl: '/prime.png',
   },
   {
     title: 'Nike Air Jordan UI',
@@ -156,6 +184,7 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['UI/UX'],
     liveUrl: '#',
     githubUrl: '#',
+    imageUrl: '/Jordan.png',
   },
   {
     title: 'Porsche 911 Design',
@@ -164,14 +193,15 @@ const MORE_PROJECTS: Project[] = [
     filterTags: ['UI/UX'],
     liveUrl: '#',
     githubUrl: '#',
+    imageUrl: '/Porsche%20red.png',
   },
 ];
 
-const ALL_FILTER_TAGS: FilterTag[] = ['All', 'AI / ML', 'Python', 'React', 'Full Stack', 'Flutter', 'UI/UX'];
+const ALL_FILTER_TAGS: FilterTag[] = ['All', 'AI / ML', 'Python', 'NLP', 'React', 'Full Stack', 'Flutter', 'UI/UX'];
 
-// ─── Project Card (original design, untouched) ────────────────────────────────
+// ─── Project Card ─────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project, index, onOpenCaseStudy }: { project: Project; index: number, onOpenCaseStudy: (p: Project) => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
@@ -206,7 +236,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         className="relative flex flex-col h-full rounded-[2rem] bg-[color-mix(in_srgb,var(--color-text-main)_2%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] overflow-hidden group"
       >
         <div className="relative w-full aspect-[16/10] bg-[color-mix(in_srgb,var(--color-secondary)_80%,var(--color-text-main)_20%)] overflow-hidden">
-          {/* Project Image or Placeholder */}
           {project.imageUrl ? (
             <img
               src={project.imageUrl}
@@ -222,13 +251,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </div>
           )}
 
-          {/* Hover overlay with action buttons */}
           <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
             <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+              title="Live Demo"
             >
               <ExternalLink className="w-5 h-5" />
             </a>
@@ -237,9 +266,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
+              title="GitHub"
             >
               <Code2 className="w-5 h-5" />
             </a>
+            <button
+              onClick={() => onOpenCaseStudy(project)}
+              className="w-12 h-12 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+              title="View Case Study"
+            >
+              <LayoutTemplate className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
@@ -266,9 +303,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   );
 }
 
-// ─── More Projects Card (compact version of same design) ──────────────────────
+// ─── More Projects Card ───────────────────────────────────────────────────────
 
-function MoreProjectCard({ project, index }: { project: Project; index: number }) {
+function MoreProjectCard({ project, index, onOpenCaseStudy }: { project: Project; index: number, onOpenCaseStudy: (p: Project) => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
@@ -301,7 +338,6 @@ function MoreProjectCard({ project, index }: { project: Project; index: number }
         className="relative flex flex-col h-full rounded-[2rem] bg-[color-mix(in_srgb,var(--color-text-main)_2%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] overflow-hidden group"
       >
         <div className="relative w-full aspect-[16/10] bg-[#111] overflow-hidden">
-          {/* Project Image or Placeholder */}
           {project.imageUrl ? (
             <img
               src={project.imageUrl}
@@ -323,6 +359,7 @@ function MoreProjectCard({ project, index }: { project: Project; index: number }
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+              title="Live Demo"
             >
               <ExternalLink className="w-5 h-5" />
             </a>
@@ -331,9 +368,17 @@ function MoreProjectCard({ project, index }: { project: Project; index: number }
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
+              title="GitHub"
             >
               <Code2 className="w-5 h-5" />
             </a>
+            <button
+              onClick={() => onOpenCaseStudy(project)}
+              className="w-12 h-12 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+              title="View Case Study"
+            >
+              <LayoutTemplate className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
@@ -365,14 +410,26 @@ function MoreProjectCard({ project, index }: { project: Project; index: number }
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState<FilterTag>('All');
   const [showMore, setShowMore] = useState(false);
+  
+  // Case Study Modal State
+  const [modalState, setModalState] = useState<{isOpen: boolean; project: Project | null}>({
+    isOpen: false,
+    project: null
+  });
 
-  // Filter featured projects
+  const openCaseStudy = (project: Project) => {
+    setModalState({ isOpen: true, project });
+  };
+
+  const closeCaseStudy = () => {
+    setModalState(prev => ({ ...prev, isOpen: false }));
+  };
+
   const filteredFeatured = useMemo(() => {
     if (activeFilter === 'All') return FEATURED_PROJECTS;
     return FEATURED_PROJECTS.filter(p => p.filterTags.includes(activeFilter));
   }, [activeFilter]);
 
-  // Filter more projects
   const filteredMore = useMemo(() => {
     if (activeFilter === 'All') return MORE_PROJECTS;
     return MORE_PROJECTS.filter(p => p.filterTags.includes(activeFilter));
@@ -381,14 +438,30 @@ export function Projects() {
   const totalCount = FEATURED_PROJECTS.length + MORE_PROJECTS.length;
   const moreCount = filteredMore.length;
 
+  useEffect(() => {
+    if (activeFilter === 'All') {
+      setShowMore(false);
+      return;
+    }
+
+    if (filteredMore.length > 0) {
+      setShowMore(true);
+      const timer = window.setTimeout(() => {
+        document.getElementById('projects-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    setShowMore(false);
+  }, [activeFilter, filteredMore.length]);
+
   return (
     <section id="projects" className="relative py-24 md:py-32 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
       <div className="container max-w-7xl mx-auto px-6">
 
-        {/* ── Section Heading ── */}
         <SectionHeading title="My Projects" subtitle="Selected Work" />
 
-        {/* ── Filter Pills ── */}
         <div className="flex items-center gap-2 flex-wrap mt-10 mb-12">
           {ALL_FILTER_TAGS.map((tag) => {
             const isActive = activeFilter === tag;
@@ -414,15 +487,12 @@ export function Projects() {
               </motion.button>
             );
           })}
-
-          {/* Total count badge */}
           <span className="ml-auto text-xs font-mono text-[color-mix(in_srgb,var(--color-text-main)_25%,transparent)] tabular-nums">
             {totalCount} projects total
           </span>
         </div>
 
-        {/* ── Featured Label ── */}
-        <div className="flex items-center gap-3 mb-6">
+        <div id="projects-results" className="flex items-center gap-3 mb-6">
           <Star className="w-3.5 h-3.5 text-[var(--color-primary)]" />
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)]">
             Featured
@@ -434,7 +504,6 @@ export function Projects() {
           <span className="text-xs font-mono text-[color-mix(in_srgb,var(--color-text-main)_25%,transparent)]">{filteredFeatured.length} shown</span>
         </div>
 
-        {/* ── Featured Grid ── */}
         <AnimatePresence mode="wait">
           {filteredFeatured.length > 0 ? (
             <motion.div
@@ -446,7 +515,7 @@ export function Projects() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {filteredFeatured.map((proj, i) => (
-                <ProjectCard key={proj.title} project={proj} index={i} />
+                <ProjectCard key={proj.title} project={proj} index={i} onOpenCaseStudy={openCaseStudy} />
               ))}
             </motion.div>
           ) : (
@@ -462,7 +531,6 @@ export function Projects() {
           )}
         </AnimatePresence>
 
-        {/* ── Expand Bar ── */}
         <motion.button
           onClick={() => setShowMore(v => !v)}
           whileHover={{ scale: 1.005 }}
@@ -473,37 +541,22 @@ export function Projects() {
             border: showMore ? '1px solid color-mix(in srgb, var(--color-primary) 25%, transparent)' : '1px solid color-mix(in srgb, var(--color-text-main) 7%, transparent)',
           }}
         >
-          {/* Shimmer on hover */}
           <div
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             style={{
               background: 'linear-gradient(90deg, transparent, rgba(168,85,247,0.04), transparent)',
             }}
           />
-
-          <div
-            className="w-px h-4 rounded-full"
-            style={{ background: 'color-mix(in srgb, var(--color-text-main) 15%, transparent)' }}
-          />
+          <div className="w-px h-4 rounded-full" style={{ background: 'color-mix(in srgb, var(--color-text-main) 15%, transparent)' }} />
           <span className="text-sm font-medium" style={{ color: 'color-mix(in srgb, var(--color-text-main) 55%, transparent)' }}>
-            {showMore
-              ? 'Collapse'
-              : `View ${moreCount} More Project${moreCount !== 1 ? 's' : ''}`}
+            {showMore ? 'Collapse' : `View ${moreCount} More Project${moreCount !== 1 ? 's' : ''}`}
           </span>
-          <div
-            className="w-px h-4 rounded-full"
-            style={{ background: 'rgba(255,255,255,0.15)' }}
-          />
-
-          <motion.div
-            animate={{ rotate: showMore ? 180 : 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          >
+          <div className="w-px h-4 rounded-full" style={{ background: 'rgba(255,255,255,0.15)' }} />
+          <motion.div animate={{ rotate: showMore ? 180 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 25 }}>
             <ChevronDown className="w-4 h-4" style={{ color: 'color-mix(in srgb, var(--color-text-main) 40%, transparent)' }} />
           </motion.div>
         </motion.button>
 
-        {/* ── More Projects (expandable) ── */}
         <AnimatePresence>
           {showMore && (
             <motion.div
@@ -513,25 +566,20 @@ export function Projects() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden"
             >
-              {/* More Projects Label */}
               <div className="flex items-center gap-3 mt-10 mb-6">
-                <div                className="w-1.5 h-1.5 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_30%,transparent)]" />
+                <div className="w-1.5 h-1.5 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_30%,transparent)]" />
                 <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[color-mix(in_srgb,var(--color-text-main)_35%,transparent)]">
                   More Projects
                 </span>
-                <div
-                  className="flex-1 h-px"
-                  style={{ background: 'color-mix(in srgb, var(--color-text-main) 6%, transparent)' }}
-                />
+                <div className="flex-1 h-px" style={{ background: 'color-mix(in srgb, var(--color-text-main) 6%, transparent)' }} />
                 <span className="text-xs font-mono text-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)]">{filteredMore.length} projects</span>
               </div>
 
-              {/* More Grid */}
               <AnimatePresence mode="popLayout">
                 {filteredMore.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredMore.map((proj, i) => (
-                      <MoreProjectCard key={proj.title} project={proj} index={i} />
+                      <MoreProjectCard key={proj.title} project={proj} index={i} onOpenCaseStudy={openCaseStudy} />
                     ))}
                   </div>
                 ) : (
@@ -545,11 +593,9 @@ export function Projects() {
                 )}
               </AnimatePresence>
 
-              {/* Collapse Button at bottom */}
               <motion.button
                 onClick={() => {
                   setShowMore(false);
-                  // Smooth scroll back up to projects section
                   document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 whileHover={{ scale: 1.02 }}
@@ -568,8 +614,78 @@ export function Projects() {
             </motion.div>
           )}
         </AnimatePresence>
-
       </div>
+
+      {/* Case Study Modal rendering */}
+      <JourneyModal 
+        isOpen={modalState.isOpen} 
+        onClose={closeCaseStudy} 
+        title={modalState.project?.title || ''}
+      >
+        {modalState.project && (
+          <div className="space-y-6 text-[var(--color-text-muted)] font-body pb-4">
+            {modalState.project.role && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">My Role</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.role}</p>
+              </div>
+            )}
+            {modalState.project.problem && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">The Problem</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.problem}</p>
+              </div>
+            )}
+            {modalState.project.solution && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">The Solution</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.solution}</p>
+              </div>
+            )}
+            <div>
+              <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-3">Technologies Used</h4>
+              <div className="flex flex-wrap gap-2">
+                {modalState.project.tags.map((tag, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full text-xs font-medium border border-[var(--color-primary)]/20">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            {modalState.project.challenges && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Challenges Overcome</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.challenges}</p>
+              </div>
+            )}
+            {modalState.project.learnings && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Key Learnings</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.learnings}</p>
+              </div>
+            )}
+            {modalState.project.futureVision && (
+              <div>
+                <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Future Vision</h4>
+                <p className="text-[var(--color-text-main)]">{modalState.project.futureVision}</p>
+              </div>
+            )}
+            <div className="pt-6 border-t border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] flex gap-4">
+              {modalState.project.liveUrl !== '#' && (
+                <a href={modalState.project.liveUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-primary)]/80 transition-colors">
+                  <ExternalLink className="w-4 h-4" /> Live Demo
+                </a>
+              )}
+              {modalState.project.githubUrl !== '#' && (
+                <a href={modalState.project.githubUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-transparent text-[var(--color-text-main)] border border-[var(--color-text-main)]/20 rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-text-main)]/5 transition-colors">
+                  <Code2 className="w-4 h-4" /> View Code
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+      </JourneyModal>
+
     </section>
   );
 }

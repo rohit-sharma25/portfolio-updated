@@ -11,12 +11,15 @@ import { ParallaxSection } from './components/ui/ParallaxSection';
 import { MacDock } from './components/ui/MacDock';
 import { CommandPalette } from './components/ui/CommandPalette';
 import { BackgroundEffects } from './components/ui/BackgroundEffects';
+import { AICompanion } from './components/ui/AICompanion';
+import { StoryConnector } from './components/ui/StoryConnector';
 
 // Sections
 import { Hero } from './components/sections/Hero';
 import { FeaturedImpact } from './components/sections/FeaturedImpact';
 import { GitHubStats } from './components/sections/GitHubStats';
 import { About } from './components/sections/About';
+import { EngineeringCapabilities } from './components/sections/EngineeringCapabilities';
 import { FeaturedProduct } from './components/sections/FeaturedProduct';
 import { AIEngineering } from './components/sections/AIEngineering';
 import { Projects } from './components/sections/Projects';
@@ -89,11 +92,14 @@ function App() {
         ogType="profile"
       />
       <BackgroundEffects theme={theme} />
+      <AICompanion />
       <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setIsCommandPaletteOpen} />
       <MacDock onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} />
       
       <main className="relative z-10 w-full overflow-hidden">
-        <Hero theme={theme} toggleTheme={toggleTheme} />
+        <div data-ai-context="hero">
+          <Hero theme={theme} toggleTheme={toggleTheme} />
+        </div>
 
         {/* Theme transition overlay — a brief crossfade that makes the change feel deliberate */}
         <AnimatePresence>
@@ -116,17 +122,52 @@ function App() {
           )}
         </AnimatePresence>
         <ParallaxSection offset={120}><FeaturedImpact /></ParallaxSection>
+        
+        <StoryConnector text="Every great product starts with a problem." />
+        
         <ParallaxSection offset={80}><About /></ParallaxSection>
-        <ParallaxSection offset={100}><FeaturedProduct /></ParallaxSection>
-        <ParallaxSection offset={90}><AIEngineering /></ParallaxSection>
-        <ParallaxSection offset={70}><Projects /></ParallaxSection>
-        <ParallaxSection offset={60}><Timeline /></ParallaxSection>
+        <ParallaxSection offset={80}><EngineeringCapabilities /></ParallaxSection>
+        
+        <div data-ai-context="autofixnow">
+          <ParallaxSection offset={100}><FeaturedProduct /></ParallaxSection>
+        </div>
+        
+        <StoryConnector text="Building AutoFixNow made me realize solving real-world problems requires much more than code." />
+        
+        <div data-ai-context="ai_engineering">
+          <ParallaxSection offset={90}><AIEngineering /></ParallaxSection>
+        </div>
+        
+        <StoryConnector text="My curiosity evolved into intelligent systems." />
+        
+        <div data-ai-context="projects">
+          <ParallaxSection offset={70}><Projects /></ParallaxSection>
+        </div>
+        
+        <StoryConnector text="Every project became another lesson in product design." />
+        
+        <div data-ai-context="experience">
+          <ParallaxSection offset={60}><Timeline /></ParallaxSection>
+        </div>
+        
+        <StoryConnector text="Experience isn't just time spent, it's problems solved." />
         <ParallaxSection offset={50}><GitHubStats /></ParallaxSection>
+        
+        <StoryConnector text="How do I think about software?" />
+        
         <ParallaxSection offset={80}><BuildPhilosophy /></ParallaxSection>
         <ParallaxSection offset={60}><Testimonials /></ParallaxSection>
         <ParallaxSection offset={60}><CurrentlyReading /></ParallaxSection>
+        
+        <StoryConnector text="Learning never stops." />
+        
         <ParallaxSection offset={100}><Certifications /></ParallaxSection>
-        <ParallaxSection offset={120}><Contact resumeUrl="/resume.pdf" /></ParallaxSection>
+        
+        <StoryConnector text="Now let's build something meaningful." />
+        
+        <div data-ai-context="contact">
+          <ParallaxSection offset={120}><Contact resumeUrl="/resume.pdf" /></ParallaxSection>
+        </div>
       </main>
     </div>
   );

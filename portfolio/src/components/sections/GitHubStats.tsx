@@ -114,7 +114,7 @@ export function GitHubStats() {
 
   if (loading) {
     return (
-      <section className="relative py-16 bg-[var(--color-secondary)] border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
+      <section className="relative py-16 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
         <div className="container max-w-7xl mx-auto px-6">
           <SectionHeading title="GitHub Presence" subtitle="Open Source" />
           <div className="mt-8 flex items-center justify-center">
@@ -127,7 +127,7 @@ export function GitHubStats() {
 
   if (error || !user) {
     return (
-      <section className="relative py-16 bg-[var(--color-secondary)] border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
+      <section className="relative py-16 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
         <div className="container max-w-7xl mx-auto px-6">
           <SectionHeading title="GitHub Presence" subtitle="Open Source" />
           <div className="mt-8 text-center text-[var(--color-text-muted)] text-sm">
@@ -148,7 +148,7 @@ export function GitHubStats() {
   const compactLanguages = languages.slice(0, 5);
 
   return (
-    <section className="relative py-20 bg-[var(--color-secondary)] border-t border-[rgba(255,255,255,0.05)]">
+    <section className="relative py-20 border-t border-[rgba(255,255,255,0.05)]">
       <div className="container max-w-7xl mx-auto px-6">
         <SectionHeading title="GitHub Presence" subtitle="Open Source" className="mb-8" />
 

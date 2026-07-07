@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface JourneyModalProps {
   isOpen: boolean;
@@ -10,6 +11,12 @@ interface JourneyModalProps {
 }
 
 export function JourneyModal({ isOpen, onClose, title, children }: JourneyModalProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -21,26 +28,35 @@ export function JourneyModal({ isOpen, onClose, title, children }: JourneyModalP
     };
   }, [isOpen]);
 
-  return (
-    <AnimatePresence>
+  // Use the title as a key so that when a different project is selected,
+  // the modal content fully remounts — preventing stale data flash.
+  const modalKey = title || 'modal';
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
-          key="backdrop"
+          key={modalKey}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           onClick={onClose}
-          className="fixed inset-0 z-50 bg-[var(--color-background)]/80 backdrop-blur-sm"
-        />
-      )}
-      {isOpen && (
-        <div key="modal-wrapper" className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+        >
+          {/* Backdrop blur */}
+          <div className="absolute inset-0 bg-[var(--color-background)]/80 backdrop-blur-sm" />
+
+          {/* Modal Panel */}
           <motion.div
-            key="modal"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-[var(--color-secondary)] border border-[var(--color-text-main)]/10 rounded-2xl shadow-2xl pointer-events-auto"
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-[var(--color-secondary)] border border-[var(--color-text-main)]/10 rounded-2xl shadow-2xl"
           >
             <div className="sticky top-0 flex items-center justify-between p-6 border-b border-[var(--color-text-main)]/10 bg-[var(--color-secondary)]/80 backdrop-blur-md z-10">
               <h3 className="text-xl font-heading font-semibold text-[var(--color-text-main)]">{title}</h3>
@@ -55,8 +71,9 @@ export function JourneyModal({ isOpen, onClose, title, children }: JourneyModalP
               {children}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

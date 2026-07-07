@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-type Category = 'AI / ML' | 'Full Stack' | 'Product';
+type Category = 'Programming' | 'Web Dev' | 'Tools' | 'Deployments';
 
 interface SkillItem {
   name: string;
@@ -19,40 +19,45 @@ interface SkillNode {
 }
 
 const SKILLS: SkillItem[] = [
-  { name: 'Python', category: 'AI / ML' },
-  { name: 'RAG', category: 'AI / ML' },
-  { name: 'LangChain', category: 'AI / ML' },
-  { name: 'NLP', category: 'AI / ML' },
-  { name: 'Agents', category: 'AI / ML' },
-  { name: 'ML', category: 'AI / ML' },
-  { name: 'React', category: 'Full Stack' },
-  { name: 'TypeScript', category: 'Full Stack' },
-  { name: 'Node.js', category: 'Full Stack' },
-  { name: 'MongoDB', category: 'Full Stack' },
-  { name: 'FastAPI', category: 'Full Stack' },
-  { name: 'Postgres', category: 'Full Stack' },
-  { name: 'System Design', category: 'Product' },
-  { name: 'UX', category: 'Product' },
-  { name: 'Architecture', category: 'Product' },
-  { name: 'Problem Solving', category: 'Product' },
+  { name: 'HTML5', category: 'Programming' },
+  { name: 'CSS3', category: 'Programming' },
+  { name: 'JavaScript', category: 'Programming' },
+  { name: 'Python', category: 'Programming' },
+  { name: 'C', category: 'Programming' },
+  { name: 'Responsive Design', category: 'Web Dev' },
+  { name: 'Portfolio Websites', category: 'Web Dev' },
+  { name: 'UI & UX', category: 'Web Dev' },
+  { name: 'Web Apps', category: 'Web Dev' },
+  { name: 'Git', category: 'Tools' },
+  { name: 'GitHub', category: 'Tools' },
+  { name: 'VS Code', category: 'Tools' },
+  { name: 'Figma', category: 'Tools' },
+  { name: 'Replit', category: 'Tools' },
+  { name: 'Vercel', category: 'Deployments' },
+  { name: 'Render', category: 'Deployments' },
+  { name: 'Netlify', category: 'Deployments' },
+  { name: 'Streamlit', category: 'Deployments' },
 ];
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  'AI / ML': 'rgba(168,85,247,',
-  'Full Stack': 'rgba(59,130,246,',
-  'Product': 'rgba(34,211,238,',
+  'Programming': 'rgba(168,85,247,',   // Primary Purple
+  'Web Dev': 'rgba(59,130,246,',       // Blue
+  'Tools': 'rgba(34,211,238,',         // Cyan
+  'Deployments': 'rgba(236,72,153,'    // Pink
 };
 
 const CATEGORY_HOVER: Record<Category, string> = {
-  'AI / ML': 'rgba(192,132,252,',
-  'Full Stack': 'rgba(96,165,250,',
-  'Product': 'rgba(103,232,249,',
+  'Programming': 'rgba(192,132,252,',
+  'Web Dev': 'rgba(96,165,250,',
+  'Tools': 'rgba(103,232,249,',
+  'Deployments': 'rgba(244,114,182,'
 };
 
 const CATEGORY_SOLID: Record<Category, string> = {
-  'AI / ML': '#A855F7',
-  'Full Stack': '#3B82F6',
-  'Product': '#22D3EE',
+  'Programming': '#A855F7',
+  'Web Dev': '#3B82F6',
+  'Tools': '#22D3EE',
+  'Deployments': '#EC4899'
 };
 
 let textColorCache = '#FFFFFF';

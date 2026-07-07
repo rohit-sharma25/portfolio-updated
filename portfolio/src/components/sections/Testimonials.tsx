@@ -389,7 +389,7 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative py-24 md:py-32 overflow-hidden border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)] bg-[var(--color-secondary)]"
+      className="relative py-24 md:py-32 overflow-hidden border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]"
     >
       {/* Background subtle glow */}
       <div

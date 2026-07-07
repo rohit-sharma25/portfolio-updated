@@ -38,7 +38,7 @@ export function AIEngineering() {
   ];
 
   return (
-    <section id="ai-engineering" className="relative py-24 md:py-32 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)] bg-[var(--color-secondary)]">
+    <section id="ai-engineering" className="relative py-24 md:py-32 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
       <div className="container max-w-7xl mx-auto px-6">
         <SectionHeading title="AI Engineering" subtitle="Intelligent Systems" />
 

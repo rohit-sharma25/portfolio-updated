@@ -31,7 +31,7 @@ export function About() {
     {
       title: "Problem Solving",
       content: "I approach engineering as a product builder first. Code is just the medium; solving the right problem is the goal.",
-      className: "md:col-span-1 md:row-span-2",
+      className: "md:col-span-1",
       titleSize: "text-xl"
     },
     {
@@ -49,7 +49,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="relative py-24 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)] bg-[var(--color-secondary)]">
+    <section id="about" className="relative py-24 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)]">
       <div className="container max-w-7xl mx-auto px-6">
         <SectionHeading title="The Architect" subtitle="About Me" className="mb-16" />
         

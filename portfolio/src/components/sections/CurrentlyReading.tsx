@@ -42,7 +42,7 @@ const readingItems: ReadingItem[] = [
 
 export function CurrentlyReading() {
   return (
-    <section id="learning" className="relative py-24 md:py-32 bg-[var(--color-secondary)] border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)] overflow-hidden">
+    <section id="learning" className="relative py-24 md:py-32 border-t border-[color-mix(in_srgb,var(--color-text-main)_5%,transparent)] overflow-hidden">
       <div className="container max-w-7xl mx-auto px-6">
         <SectionHeading title="Currently Learning" subtitle="Always Growing" />
 
