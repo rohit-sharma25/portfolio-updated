@@ -26,6 +26,12 @@ interface Project {
   futureVision?: string;
 }
 
+function isValidLink(url?: string) {
+  if (!url) return false;
+  const trimmed = url.trim();
+  return trimmed !== '' && trimmed !== '#';
+}
+
 // ─── All Projects Data ────────────────────────────────────────────────────────
 
 const FEATURED_PROJECTS: Project[] = [
@@ -34,7 +40,7 @@ const FEATURED_PROJECTS: Project[] = [
     desc: 'Personal AI voice assistant capable of understanding and responding to spoken commands in real time using speech recognition and AI reasoning.',
     tags: ['Voice AI', 'STT / TTS', 'Python'],
     filterTags: ['AI / ML', 'Python'],
-    liveUrl: '#',
+    liveUrl: 'https://rohit-sharma25.github.io/EDITH-personal-AI-voice-agent/',
     githubUrl: 'https://github.com/rohit-sharma25/EDITH-personal-AI-voice-agent',
     imageUrl: '/Edith.png',
     problem: 'Off-the-shelf voice assistants are locked into closed ecosystems and lack deep customization for developer workflows.',
@@ -49,7 +55,7 @@ const FEATURED_PROJECTS: Project[] = [
     desc: 'AI-powered patient assistance platform for AIIMS Jodhpur. Helps patients navigate hospital information through natural conversations.',
     tags: ['FastAPI', 'Gemini AI', 'Python'],
     filterTags: ['AI / ML', 'Python', 'NLP'],
-    liveUrl: '#',
+    liveUrl: 'https://aiimshospitalquery-bot-production.up.railway.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/sahayak.png',
   },
@@ -82,7 +88,7 @@ const FEATURED_PROJECTS: Project[] = [
     desc: 'Web application that helps users track and manage expenses, categorize spending, and view insights into habits.',
     tags: ['Full Stack', 'React', 'MongoDB'],
     filterTags: ['Full Stack', 'React'],
-    liveUrl: '#',
+    liveUrl: 'https://expensifier-ashy.vercel.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/expensifer.png',
   },
@@ -91,7 +97,7 @@ const FEATURED_PROJECTS: Project[] = [
     desc: 'Cinematic web experience built with 160+ hand-sequenced GSAP scroll animation frames for a visually immersive storytelling journey.',
     tags: ['React', 'GSAP', 'JavaScript'],
     filterTags: ['React'],
-    liveUrl: '#',
+    liveUrl: 'https://drdooms.netlify.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/doom.png',
   },
@@ -103,7 +109,7 @@ const MORE_PROJECTS: Project[] = [
     desc: 'Nike-inspired responsive website with smooth animations and mobile-first design, optimized for all devices.',
     tags: ['HTML', 'CSS', 'JavaScript'],
     filterTags: ['React'],
-    liveUrl: '#',
+    liveUrl: 'https://nike-three-liard.vercel.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/NikeUp.png',
   },
@@ -112,7 +118,7 @@ const MORE_PROJECTS: Project[] = [
     desc: 'Web application that helps users track and manage expenses, categorize spending, and view insights into habits.',
     tags: ['Full Stack', 'React', 'MongoDB'],
     filterTags: ['Full Stack', 'React'],
-    liveUrl: '#',
+    liveUrl: 'https://expensifier-ashy.vercel.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/expensifer.png',
   },
@@ -148,7 +154,7 @@ const MORE_PROJECTS: Project[] = [
     desc: 'Multi-agent healthcare AI platform with specialized agents: CardioShield AI, CareNav AI, Sanjeevani AI, and TriageAlert AI.',
     tags: ['Multi-Agent AI', 'FastAPI', 'Gemini AI'],
     filterTags: ['AI / ML', 'Python'],
-    liveUrl: '#',
+    liveUrl: 'https://medi-ai-os.vercel.app/',
     githubUrl: 'https://github.com/rohit-sharma25',
     imageUrl: '/medi-1.png',
   },
@@ -204,6 +210,8 @@ const ALL_FILTER_TAGS: FilterTag[] = ['All', 'AI / ML', 'Python', 'NLP', 'React'
 function ProjectCard({ project, index, onOpenCaseStudy }: { project: Project; index: number, onOpenCaseStudy: (p: Project) => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const liveHref = isValidLink(project.liveUrl) ? project.liveUrl : undefined;
+  const githubHref = isValidLink(project.githubUrl) ? project.githubUrl : undefined;
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -252,24 +260,35 @@ function ProjectCard({ project, index, onOpenCaseStudy }: { project: Project; in
           )}
 
           <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
-              title="Live Demo"
-            >
-              <ExternalLink className="w-5 h-5" />
-            </a>
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
-              title="GitHub"
-            >
-              <Code2 className="w-5 h-5" />
-            </a>
+            {liveHref ? (
+              <a
+                href={liveHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                title="Live Demo"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </a>
+            ) : (
+              <div
+                className="w-12 h-12 rounded-full bg-white/70 text-black/70 flex items-center justify-center cursor-not-allowed"
+                title="Live demo unavailable"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </div>
+            )}
+            {githubHref ? (
+              <a
+                href={githubHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
+                title="GitHub"
+              >
+                <Code2 className="w-5 h-5" />
+              </a>
+            ) : null}
             <button
               onClick={() => onOpenCaseStudy(project)}
               className="w-12 h-12 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.5)]"
@@ -308,6 +327,8 @@ function ProjectCard({ project, index, onOpenCaseStudy }: { project: Project; in
 function MoreProjectCard({ project, index, onOpenCaseStudy }: { project: Project; index: number, onOpenCaseStudy: (p: Project) => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const liveHref = isValidLink(project.liveUrl) ? project.liveUrl : undefined;
+  const githubHref = isValidLink(project.githubUrl) ? project.githubUrl : undefined;
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -354,24 +375,35 @@ function MoreProjectCard({ project, index, onOpenCaseStudy }: { project: Project
           )}
 
           <div className="absolute inset-0 bg-[rgba(0,0,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
-              title="Live Demo"
-            >
-              <ExternalLink className="w-5 h-5" />
-            </a>
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
-              title="GitHub"
-            >
-              <Code2 className="w-5 h-5" />
-            </a>
+            {liveHref ? (
+              <a
+                href={liveHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                title="Live Demo"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </a>
+            ) : (
+              <div
+                className="w-12 h-12 rounded-full bg-white/70 text-black/70 flex items-center justify-center cursor-not-allowed"
+                title="Live demo unavailable"
+              >
+                <ExternalLink className="w-5 h-5" />
+              </div>
+            )}
+            {githubHref ? (
+              <a
+                href={githubHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] text-[var(--color-text-main)] flex items-center justify-center hover:bg-[color-mix(in_srgb,var(--color-text-main)_20%,transparent)] transition-colors"
+                title="GitHub"
+              >
+                <Code2 className="w-5 h-5" />
+              </a>
+            ) : null}
             <button
               onClick={() => onOpenCaseStudy(project)}
               className="w-12 h-12 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-[0_0_15px_rgba(168,85,247,0.5)]"
@@ -671,12 +703,12 @@ export function Projects() {
               </div>
             )}
             <div className="pt-6 border-t border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] flex gap-4">
-              {modalState.project.liveUrl !== '#' && (
+              {modalState.project && isValidLink(modalState.project.liveUrl) && (
                 <a href={modalState.project.liveUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-primary)]/80 transition-colors">
                   <ExternalLink className="w-4 h-4" /> Live Demo
                 </a>
               )}
-              {modalState.project.githubUrl !== '#' && (
+              {modalState.project && isValidLink(modalState.project.githubUrl) && (
                 <a href={modalState.project.githubUrl} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-transparent text-[var(--color-text-main)] border border-[var(--color-text-main)]/20 rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-text-main)]/5 transition-colors">
                   <Code2 className="w-4 h-4" /> View Code
                 </a>
