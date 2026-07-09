@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Command, CornerDownLeft, Cpu, Sparkles } from 'lucide-react';
 import { aiEngine } from '../../../lib/ai/responseEngine';
 import type { AIResponse, ContextAction } from '../../../lib/ai/responseEngine';
 import { personality } from '../../../lib/ai/personality';
-import { ContextualBubble } from './ContextualBubble'; // Using getActionIcon from here if needed, or inline
 
 interface ChatInterfaceProps {
   isOpen: boolean;
@@ -30,12 +29,63 @@ export function ChatInterface({ isOpen, onClose, currentContext }: ChatInterface
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [userScrolledUp, setUserScrolledUp] = useState(false);
 
+  // Stop Lenis (global smooth scroll) from hijacking wheel events inside the chat modal.
+  // Without this, scrolling the chat messages actually scrolls the page behind it.
+  const stopScrollPropagation = useCallback((e: WheelEvent) => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    const isScrollable = scrollHeight > clientHeight;
+    if (!isScrollable) return;
+
+    const scrollingUp = e.deltaY < 0;
+    const scrollingDown = e.deltaY > 0;
+    const atTop = scrollTop === 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+    // Only stop propagation if the container can still scroll in the given direction
+    if ((scrollingUp && !atTop) || (scrollingDown && !atBottom)) {
+      e.stopPropagation();
+    } else if (isScrollable) {
+      e.stopPropagation();
+    }
+  }, []);
+
+  // Attach/detach wheel blocker when modal opens/closes
   useEffect(() => {
-    if (messagesEndRef.current) {
+    const modal = modalRef.current;
+    if (!modal || !isOpen) return;
+    modal.addEventListener('wheel', stopScrollPropagation, { passive: false });
+    return () => modal.removeEventListener('wheel', stopScrollPropagation);
+  }, [isOpen, stopScrollPropagation]);
+
+  // Detect if user has scrolled up manually
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      // If user scrolls more than 100px away from bottom, mark as scrolled up
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setUserScrolledUp(!isNearBottom);
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Auto-scroll only when user hasn't scrolled up
+  useEffect(() => {
+    if (messagesEndRef.current && !userScrolledUp) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, userScrolledUp]);
 
   useEffect(() => {
     // Escape key to close
@@ -105,14 +155,16 @@ export function ChatInterface({ isOpen, onClose, currentContext }: ChatInterface
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 md:p-8"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-md sm:p-4 md:p-8"
         >
           <motion.div
+            ref={modalRef}
             initial={{ scale: 0.95, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 20, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-4xl h-[85vh] bg-[var(--color-background)] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+            className="relative w-full sm:max-w-4xl h-full sm:h-[85vh] bg-[var(--color-background)] border-0 sm:border border-white/10 sm:rounded-3xl shadow-2xl flex flex-col"
+            style={{ overflow: 'hidden' }}
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/5 backdrop-blur-sm">
@@ -136,7 +188,11 @@ export function ChatInterface({ isOpen, onClose, currentContext }: ChatInterface
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
+            <div
+              ref={chatContainerRef}
+              className="flex-1 min-h-0 p-4 md:p-6 space-y-4 md:space-y-6 custom-scrollbar"
+              style={{ overflowY: 'scroll', overscrollBehavior: 'contain' }}
+            >
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -186,8 +242,8 @@ export function ChatInterface({ isOpen, onClose, currentContext }: ChatInterface
             </div>
 
             {/* Input Area */}
-            <div className="p-6 border-t border-white/5 bg-white/5">
-              <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="p-4 md:p-6 border-t border-white/5 bg-white/5">
+              <div className="flex gap-2 mb-3 md:mb-4 overflow-x-auto pb-2 scrollbar-hide">
                 {['Who is Rohit?', 'Tell me about AutoFixNow', 'What hackathons has he won?', 'Download resume'].map((prompt, i) => (
                   <button
                     key={i}

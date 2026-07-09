@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Sparkles } from 'lucide-react';
 
 interface DroneProps {
   onClick: () => void;
@@ -10,7 +11,7 @@ interface DroneProps {
 export function Drone({ onClick, isHovered, onMouseEnter, onMouseLeave }: DroneProps) {
   return (
     <motion.div
-      className="relative cursor-pointer z-50 flex items-center justify-center"
+      className="relative cursor-pointer z-50 flex items-center justify-center group"
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -18,38 +19,54 @@ export function Drone({ onClick, isHovered, onMouseEnter, onMouseLeave }: DroneP
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
     >
-      {/* Outer Glow Ring */}
+      {/* Outer Glow / Halo */}
       <motion.div
-        className="absolute inset-0 rounded-full border border-purple-500/30"
+        className="absolute inset-0 blur-2xl bg-purple-500/40 rounded-full"
         animate={{
-          scale: isHovered ? 1.4 : [1, 1.1, 1],
-          opacity: isHovered ? 0.8 : [0.3, 0.6, 0.3],
-          rotate: 360
+          scale: isHovered ? 1.6 : [1, 1.3, 1],
+          opacity: isHovered ? 0.9 : [0.4, 0.7, 0.4],
         }}
-        transition={{
-          rotate: { duration: 10, repeat: Infinity, ease: 'linear' },
-          scale: isHovered ? { type: 'spring' } : { duration: 3, repeat: Infinity, ease: 'easeInOut' },
-          opacity: isHovered ? { type: 'spring' } : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
-        }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
       
-      {/* Inner Core */}
+      {/* Organic Floating Blob */}
       <motion.div
-        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white flex items-center justify-center relative overflow-hidden"
+        className="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center relative overflow-hidden backdrop-blur-xl border border-white/30 shadow-[0_0_30px_rgba(168,85,247,0.5),inset_0_0_20px_rgba(255,255,255,0.4)]"
         style={{
-          boxShadow: '0 0 20px rgba(168, 85, 247, 0.4), inset 0 0 10px rgba(168, 85, 247, 0.2)'
+          background: 'linear-gradient(135deg, rgba(168,85,247,0.85), rgba(59,130,246,0.75))',
         }}
         animate={{
-          scale: isHovered ? 1.1 : 1,
+          scale: isHovered ? 1.15 : 1,
+          borderRadius: [
+            "60% 40% 30% 70% / 60% 30% 70% 40%",
+            "30% 60% 70% 40% / 50% 60% 30% 60%",
+            "60% 40% 30% 70% / 60% 30% 70% 40%"
+          ],
+          rotate: isHovered ? 180 : 360
+        }}
+        transition={{
+          borderRadius: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+          rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+          scale: { type: "spring", stiffness: 300, damping: 15 }
         }}
       >
+        {/* Inner core / eye that counters rotation to stay upright */}
+        <motion.div 
+          className="relative z-10 flex items-center justify-center"
+          animate={{ rotate: isHovered ? -180 : -360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        >
+           <Sparkles className="w-6 h-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,1)]" />
+        </motion.div>
+        
+        {/* Shimmer effect inside blob */}
         <motion.div
-          className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-purple-500"
+          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent w-[200%] h-[200%]"
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.7, 1, 0.7]
+            x: ['-100%', '50%'],
+            y: ['-100%', '50%']
           }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
         />
       </motion.div>
     </motion.div>

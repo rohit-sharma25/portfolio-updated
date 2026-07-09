@@ -37,7 +37,7 @@ export function MacDock({ onOpenCommandPalette }: MacDockProps) {
           <motion.div
             onMouseMove={(e) => mouseX.set(e.pageX)}
             onMouseLeave={() => mouseX.set(Infinity)}
-            className="flex items-center gap-2 px-4 py-3 rounded-2xl backdrop-blur-2xl shadow-2xl border"
+          className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 sm:py-3 rounded-2xl backdrop-blur-2xl shadow-2xl border"
             style={{
               background: 'rgba(10,10,12,0.85)',
               borderColor: 'rgba(255,255,255,0.09)',
@@ -48,8 +48,8 @@ export function MacDock({ onOpenCommandPalette }: MacDockProps) {
               <DockIcon key={i} mouseX={mouseX} item={item} />
             ))}
 
-            {/* Divider */}
-            <div className="w-px h-6 bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] mx-1" />
+            {/* Divider + View Source — hidden on small screens */}
+            <div className="hidden sm:block w-px h-6 bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] mx-1" />
 
             {/* View Source */}
             <motion.a
@@ -58,7 +58,7 @@ export function MacDock({ onOpenCommandPalette }: MacDockProps) {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="relative flex items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] text-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] hover:text-[var(--color-text-main)] hover:bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] transition-colors group"
+              className="hidden sm:flex relative items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] text-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] hover:text-[var(--color-text-main)] hover:bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] transition-colors group"
               style={{ width: 44, height: 44 }}
               title="View Source"
             >
@@ -71,15 +71,15 @@ export function MacDock({ onOpenCommandPalette }: MacDockProps) {
               </span>
             </motion.a>
 
-            {/* Divider */}
-            <div className="w-px h-6 bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] mx-1" />
+            {/* Divider + Command Palette — hidden on small screens */}
+            <div className="hidden sm:block w-px h-6 bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] mx-1" />
 
             {/* Command palette trigger */}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={onOpenCommandPalette}
-              className="relative flex items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] text-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] hover:text-[var(--color-text-main)] hover:bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] transition-colors group"
+              className="hidden sm:flex relative items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)] border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] text-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] hover:text-[var(--color-text-main)] hover:bg-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] transition-colors group"
               style={{ width: 44, height: 44 }}
               title="Command Palette (⌘K)"
             >
@@ -104,7 +104,7 @@ function DockIcon({ mouseX, item }: { mouseX: any; item: any }) {
     return val - bounds.x - bounds.width / 2;
   });
 
-  const sizeSync = useTransform(distance, [-100, 0, 100], [44, 64, 44]);
+  const sizeSync = useTransform(distance, [-100, 0, 100], [36, 56, 36]);
   const size = useSpring(sizeSync, { mass: 0.1, stiffness: 180, damping: 14 });
 
   return (

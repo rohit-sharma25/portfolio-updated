@@ -44,11 +44,18 @@ export class ResponseEngine {
     }
 
     if (this.provider === 'groq') {
-      const groqResponse = await getGroqResponse(query, currentContext);
-      return { text: groqResponse.text };
+      try {
+        const groqResponse = await getGroqResponse(query, currentContext);
+        if (groqResponse && groqResponse.text) {
+          return { text: groqResponse.text };
+        }
+      } catch (error) {
+        console.warn("Groq API failed or key missing. Falling back to static engine.", error);
+        return this.getStaticResponse(query, currentContext);
+      }
     }
 
-    return { text: "I'm sorry, I couldn't process that." };
+    return this.getStaticResponse(query, currentContext);
   }
 
   private async getStaticResponse(query: string, currentContext?: string): Promise<AIResponse> {

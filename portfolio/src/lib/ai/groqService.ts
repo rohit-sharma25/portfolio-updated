@@ -3,7 +3,7 @@ import { personality } from './personality';
 import { knowledgeBase } from './knowledgeBase';
 
 const groq = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
+  apiKey: import.meta.env.VITE_GROQ_API_KEY || 'dummy_key_for_build',
   dangerouslyAllowBrowser: true,
 });
 
