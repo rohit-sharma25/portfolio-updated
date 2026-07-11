@@ -20,12 +20,10 @@ import { FeaturedImpact } from './components/sections/FeaturedImpact';
 import { GitHubStats } from './components/sections/GitHubStats';
 import { About } from './components/sections/About';
 import { EngineeringCapabilities } from './components/sections/EngineeringCapabilities';
-import { FeaturedProduct } from './components/sections/FeaturedProduct';
-import { AIEngineering } from './components/sections/AIEngineering';
+import { FeaturedProductsCinematic } from './components/sections/FeaturedProductsCinematic';
 import { Projects } from './components/sections/Projects';
 import { Timeline } from './components/sections/Timeline';
 import { BuildPhilosophy } from './components/sections/BuildPhilosophy';
-import { Testimonials } from './components/sections/Testimonials';
 import { Certifications } from './components/sections/Certifications';
 import { CurrentlyReading } from './components/sections/CurrentlyReading';
 import { Contact } from './components/sections/Contact';
@@ -96,7 +94,7 @@ function App() {
       <CommandPalette isOpen={isCommandPaletteOpen} setIsOpen={setIsCommandPaletteOpen} />
       <MacDock onOpenCommandPalette={() => setIsCommandPaletteOpen(true)} />
       
-      <main className="relative z-10 w-full overflow-hidden">
+      <main className="relative z-10 w-full overflow-x-clip">
         <div data-ai-context="hero">
           <Hero theme={theme} toggleTheme={toggleTheme} />
         </div>
@@ -128,15 +126,7 @@ function App() {
         <ParallaxSection offset={80}><About /></ParallaxSection>
         <ParallaxSection offset={80}><EngineeringCapabilities /></ParallaxSection>
         
-        <div data-ai-context="autofixnow">
-          <ParallaxSection offset={100}><FeaturedProduct /></ParallaxSection>
-        </div>
-        
-        <StoryConnector text="Building AutoFixNow made me realize solving real-world problems requires much more than code." />
-        
-        <div data-ai-context="ai_engineering">
-          <ParallaxSection offset={90}><AIEngineering /></ParallaxSection>
-        </div>
+        <FeaturedProductsCinematic />
         
         <StoryConnector text="My curiosity evolved into intelligent systems." />
         
@@ -156,7 +146,6 @@ function App() {
         <StoryConnector text="How do I think about software?" />
         
         <ParallaxSection offset={80}><BuildPhilosophy /></ParallaxSection>
-        <ParallaxSection offset={60}><Testimonials /></ParallaxSection>
         <ParallaxSection offset={60}><CurrentlyReading /></ParallaxSection>
         
         <StoryConnector text="Learning never stops." />

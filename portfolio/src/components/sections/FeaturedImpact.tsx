@@ -32,10 +32,10 @@ function Counter({ end, suffix = '', duration = 2 }: { end: number, suffix?: str
 
 export function FeaturedImpact() {
   const stats = [
-    { label: 'Projects Built', value: 40, suffix: '+' },
-    { label: 'Technologies Learned', value: 25, suffix: '+' },
-    { label: 'AI Systems Developed', value: 12, suffix: '+' },
-    { label: 'Continuous Learning Hours', value: 1000, suffix: '+' },
+    { label: 'Projects Built', value: 15, suffix: '+' },
+    { label: 'Technologies Learned', value: 20, suffix: '+' },
+    { label: 'AI Systems Developed', value: 5, suffix: '+' },
+    { label: 'Continuous Learning Hours', value: 500, suffix: '+' },
   ];
 
   return (

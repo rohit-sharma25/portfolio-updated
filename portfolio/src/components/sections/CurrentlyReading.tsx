@@ -12,18 +12,17 @@ interface ReadingItem {
 
 const readingItems: ReadingItem[] = [
   {
-    title: 'Deep Learning with Python',
-    author: 'François Chollet',
-    type: 'book',
-    description: 'Mastering neural networks, TensorFlow, and Keras for advanced AI applications.',
+    title: 'Learning Programming',
+    type: 'topic',
+    description: 'Mastering core programming concepts, algorithms, and software development fundamentals.',
     progress: '60%',
   },
   {
-    title: 'System Design Interview',
-    author: 'Alex Xu',
-    type: 'book',
-    description: 'Architecting scalable distributed systems and preparing for system design rounds.',
-    progress: '40%',
+    title: 'Exploring Cyber Security',
+    author: 'TuteDude',
+    type: 'course',
+    description: 'Diving into the new domain of cyber security, network defense, and ethical hacking.',
+    progress: '35%',
   },
   {
     title: 'Building Microservices',
@@ -33,10 +32,9 @@ const readingItems: ReadingItem[] = [
     progress: '25%',
   },
   {
-    title: 'Advanced LangChain Patterns',
-    type: 'course',
-    description: 'Building production-ready RAG pipelines and autonomous agent workflows.',
-    progress: '75%',
+    title: 'Daily AI & Tech News',
+    type: 'topic',
+    description: 'Staying updated with the latest trends, breakthroughs, and daily news in Artificial Intelligence and Technology.',
   },
 ];
 

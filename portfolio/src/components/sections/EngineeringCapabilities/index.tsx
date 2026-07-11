@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DashboardView } from './DashboardView';
-import { WorkflowView } from './WorkflowView';
+import { SkillsView } from './SkillsView';
 import { CapabilityModal } from './CapabilityModal';
 import type { CapabilityPillar } from './data';
-import { Layers, Workflow } from 'lucide-react';
+import { Layers, Terminal } from 'lucide-react';
 
 export function EngineeringCapabilities() {
-  const [activeView, setActiveView] = useState<'dashboard' | 'workflow'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'skills'>('dashboard');
   const [selectedCapability, setSelectedCapability] = useState<CapabilityPillar | null>(null);
 
   return (
@@ -37,13 +37,13 @@ export function EngineeringCapabilities() {
               Capabilities
             </button>
             <button
-              onClick={() => setActiveView('workflow')}
+              onClick={() => setActiveView('skills')}
               className={`relative z-10 flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                activeView === 'workflow' ? 'text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
+                activeView === 'skills' ? 'text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-main)]'
               }`}
             >
-              <Workflow className="w-4 h-4" />
-              Process
+              <Terminal className="w-4 h-4" />
+              Skills
             </button>
             
             {/* Animated Pill Background */}
@@ -72,13 +72,13 @@ export function EngineeringCapabilities() {
               </motion.div>
             ) : (
               <motion.div
-                key="workflow"
+                key="skills"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <WorkflowView />
+                <SkillsView />
               </motion.div>
             )}
           </AnimatePresence>

@@ -57,6 +57,7 @@ export function JourneyModal({ isOpen, onClose, title, children }: JourneyModalP
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-[var(--color-secondary)] border border-[var(--color-text-main)]/10 rounded-2xl shadow-2xl"
+            data-lenis-prevent="true"
           >
             <div className="sticky top-0 flex items-center justify-between p-6 border-b border-[var(--color-text-main)]/10 bg-[var(--color-secondary)]/80 backdrop-blur-md z-10">
               <h3 className="text-xl font-heading font-semibold text-[var(--color-text-main)]">{title}</h3>
