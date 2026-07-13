@@ -4,7 +4,6 @@ import { ContextualBubble } from './ContextualBubble';
 import { ChatInterface } from './ChatInterface';
 import { useAIContext } from '../../../hooks/useAIContext';
 import { usePortfolioTour } from '../../../hooks/usePortfolioTour';
-import { aiEngine } from '../../../lib/ai/responseEngine';
 import type { ContextAction } from '../../../lib/ai/responseEngine';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play } from 'lucide-react';
@@ -17,52 +16,8 @@ export function AICompanion() {
   const [isDroneHovered, setIsDroneHovered] = useState(false);
   
   const [bubbleMessage, setBubbleMessage] = useState('');
-  const [bubbleActions, setBubbleActions] = useState<ContextAction[]>([]);
+  const [bubbleActions] = useState<ContextAction[]>([]);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-
-  // Update bubble context when scrolling through sections
-  useEffect(() => {
-    if (tour.isActive) return; // Let tour control the bubble during tour mode
-
-    if (!currentContext) {
-      setIsBubbleVisible(false);
-      return;
-    }
-
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let cancelled = false;
-
-    const updateContext = async () => {
-      try {
-        const response = await aiEngine.getResponse(`tell me more about this`, currentContext);
-        if (cancelled) return;
-
-        if (response.text && response.text !== "I'm sorry, I couldn't process that.") {
-          setBubbleMessage(response.text);
-          setBubbleActions(response.actions || []);
-          setIsBubbleVisible(true);
-
-          // Auto-hide bubble after 8 seconds if not hovered
-          timer = setTimeout(() => {
-            if (!isDroneHovered) {
-              setIsBubbleVisible(false);
-            }
-          }, 8000);
-        } else {
-          setIsBubbleVisible(false);
-        }
-      } catch {
-        if (!cancelled) setIsBubbleVisible(false);
-      }
-    };
-
-    updateContext();
-
-    return () => {
-      cancelled = true;
-      if (timer !== null) clearTimeout(timer);
-    };
-  }, [currentContext, isDroneHovered, tour.isActive]);
 
   // Handle Tour Mode Bubble Updates
   useEffect(() => {

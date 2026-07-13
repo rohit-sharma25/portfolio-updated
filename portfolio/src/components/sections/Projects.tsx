@@ -102,27 +102,10 @@ function ProjectCard({ project, index, onOpenCaseStudy }: { project: Project; in
         </div>
 
         {/* Content */}
-        <div className="p-5 relative z-10">
-          <h3 className="text-base font-semibold text-[var(--color-text-main)] mb-2 font-heading group-hover:text-[var(--color-primary)] transition-colors">
+        <div className="p-5 relative z-10 flex flex-col justify-between" style={{ minHeight: '120px' }}>
+          <h3 className="text-base font-semibold text-[var(--color-text-main)] mb-4 font-heading group-hover:text-[var(--color-primary)] transition-colors">
             {project.title}
           </h3>
-          <p className="text-sm text-[color-mix(in_srgb,var(--color-text-main)_50%,transparent)] leading-relaxed mb-4 line-clamp-2">
-            {project.desc}
-          </p>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {project.tags.slice(0, 3).map((tag, i) => (
-              <span key={i} className="px-2.5 py-1 rounded-md text-[10px] font-mono font-medium tracking-wide"
-                style={{
-                  background: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
-                  color: 'var(--color-primary)',
-                  border: '1px solid color-mix(in srgb, var(--color-primary) 20%, transparent)',
-                }}>
-                {tag}
-              </span>
-            ))}
-          </div>
 
           {/* Actions */}
           <div className="flex items-center gap-3">

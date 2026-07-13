@@ -182,38 +182,77 @@ export function Timeline() {
                       transition={{ duration: 0.6 }}
                       className="h-full"
                     >
-                      <PremiumCard className="p-6 md:p-8 text-left transition-all duration-500 overflow-hidden group cursor-pointer" onClick={() => openModal(exp)}>
-                        <div className="flex flex-wrap items-center gap-2 mb-4">
-                          {exp.achievement && (
-                            <span className="px-3 py-1 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-full text-xs font-bold">
-                              {exp.achievement}
-                            </span>
-                          )}
-                          {exp.badges.map((badge, idx) => (
-                            <span key={idx} className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 rounded-full text-xs font-bold">
-                              {badge}
-                            </span>
-                          ))}
-                        </div>
-                        
-                        <h3 className="text-2xl font-bold font-heading text-[var(--color-text-main)] mb-1">
-                          {exp.project ? `${exp.project} (${exp.company})` : exp.company}
-                        </h3>
-                        
-                        <p className="text-[var(--color-primary)] font-semibold text-sm mb-4">
-                          {exp.role} • {exp.duration}
-                        </p>
+                      {/* ── Cinematic Dark Glass Card ── */}
+                      <PremiumCard
+                        className="text-left transition-all duration-500 group cursor-pointer !p-0 overflow-hidden"
+                        onClick={() => openModal(exp)}
+                      >
+                        {/* Thin accent bar at top */}
+                        <div
+                          className="h-[2px] w-full"
+                          style={{ background: 'linear-gradient(90deg, var(--color-primary), transparent)' }}
+                        />
 
-                        <div className="flex items-center text-[var(--color-primary)] text-sm font-semibold group-hover:gap-3 transition-all">
-                          <span>Read full story</span>
-                          <motion.span 
-                            className="ml-2"
-                            initial={{ x: 0 }}
-                            whileHover={{ x: 4 }}
-                            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                          >
-                            <ChevronDown className="w-4 h-4 -rotate-90" />
-                          </motion.span>
+                        <div className="flex items-stretch p-5 md:p-6">
+                          {/* Content body */}
+                          <div className="flex-1 min-w-0">
+                            {/* Badges row */}
+                            <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                              {(exp as any).achievement && (
+                                <span
+                                  className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide"
+                                  style={{
+                                    background: 'color-mix(in srgb, var(--color-primary) 10%, transparent)',
+                                    color: 'var(--color-primary)',
+                                    border: '1px solid color-mix(in srgb, var(--color-primary) 20%, transparent)',
+                                  }}
+                                >
+                                  {(exp as any).achievement}
+                                </span>
+                              )}
+                              {exp.badges.map((badge, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide"
+                                  style={{
+                                    background: 'color-mix(in srgb, var(--color-primary) 8%, transparent)',
+                                    color: 'var(--color-primary)',
+                                    border: '1px solid color-mix(in srgb, var(--color-primary) 15%, transparent)',
+                                  }}
+                                >
+                                  {badge}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Company / Project title */}
+                            <h3 className="text-lg font-bold font-heading text-[var(--color-text-main)] leading-tight mb-0.5 group-hover:text-[var(--color-primary)] transition-colors truncate">
+                              {(exp as any).project ? (exp as any).project : exp.company}
+                            </h3>
+                            {(exp as any).project && (
+                              <p className="text-[11px] font-mono mb-1" style={{ color: 'color-mix(in srgb, var(--color-text-main) 30%, transparent)' }}>
+                                @ {exp.company}
+                              </p>
+                            )}
+
+                            {/* Role + Duration */}
+                            <p className="text-xs mb-4" style={{ color: 'color-mix(in srgb, var(--color-text-main) 50%, transparent)' }}>
+                              <span className="font-semibold" style={{ color: 'var(--color-primary)', opacity: 0.85 }}>
+                                {exp.role}
+                              </span>
+                              <span className="mx-1.5 opacity-20">·</span>
+                              {exp.duration}
+                            </p>
+
+                            {/* CTA */}
+                            <div
+                              className="flex items-center gap-1.5 text-xs font-semibold transition-opacity opacity-50 group-hover:opacity-100"
+                              style={{ color: 'var(--color-primary)' }}
+                            >
+                              <span>View full story</span>
+                              <ChevronDown className="w-3 h-3 -rotate-90 group-hover:translate-x-1 transition-transform duration-200" />
+                            </div>
+                          </div>
                         </div>
                       </PremiumCard>
                     </motion.div>
@@ -229,7 +268,7 @@ export function Timeline() {
       <JourneyModal
         isOpen={selectedExperience !== null}
         onClose={closeModal}
-        title={selectedExperience ? (selectedExperience.project ? `${selectedExperience.project} (${selectedExperience.company})` : selectedExperience.company) : ''}
+        title={selectedExperience ? ((selectedExperience as any).project ? `${(selectedExperience as any).project} (${selectedExperience.company})` : selectedExperience.company) : ''}
       >
         {selectedExperience && (
           <div className="space-y-6 text-[var(--color-text-muted)] font-body pb-4">
@@ -238,27 +277,27 @@ export function Timeline() {
             {selectedExperience.type === 'internship' && (
               <>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
-                  {selectedExperience.achievement && (
+                  {(selectedExperience as any).achievement && (
                     <span className="px-3 py-1 bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 rounded-full text-xs font-bold">
-                      {selectedExperience.achievement}
+                      {(selectedExperience as any).achievement}
                     </span>
                   )}
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Responsibilities</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.responsibilities}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).responsibilities}</p>
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Projects Worked On</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.projects}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).projects}</p>
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Skills Learned</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.skillsLearned}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).skillsLearned}</p>
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Reflection</h4>
-                  <p className="text-[var(--color-text-main)] italic border-l-2 border-[var(--color-primary)] pl-3 py-1">"{selectedExperience.expanded.reflection}"</p>
+                  <p className="text-[var(--color-text-main)] italic border-l-2 border-[var(--color-primary)] pl-3 py-1">"{(selectedExperience.expanded as any).reflection}"</p>
                 </div>
               </>
             )}
@@ -268,25 +307,25 @@ export function Timeline() {
               <>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Problem Statement</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.problem}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).problem}</p>
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Solution</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.solution}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).solution}</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Leadership Role</h4>
-                    <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.leadership}</p>
+                    <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).leadership}</p>
                   </div>
                   <div>
                     <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Team & Outcome</h4>
-                    <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.team}. {selectedExperience.expanded.outcome}</p>
+                    <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).team}. {(selectedExperience.expanded as any).outcome}</p>
                   </div>
                 </div>
                 <div>
                   <h4 className="text-[var(--color-primary)] font-semibold text-sm uppercase tracking-wider mb-2">Future Scope</h4>
-                  <p className="text-[var(--color-text-main)]">{selectedExperience.expanded.futureScope}</p>
+                  <p className="text-[var(--color-text-main)]">{(selectedExperience.expanded as any).futureScope}</p>
                 </div>
               </>
             )}
@@ -305,13 +344,13 @@ export function Timeline() {
 
             {/* Documents */}
             <div className="flex flex-wrap gap-3 pt-6 border-t border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)]">
-              {selectedExperience.expanded.certificate && (
-                <a href={selectedExperience.expanded.certificate} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-primary)]/80 transition-colors">
+              {(selectedExperience.expanded as any).certificate && (
+                <a href={(selectedExperience.expanded as any).certificate} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-primary)]/80 transition-colors">
                   <Award className="w-4 h-4" /> View Certificate
                 </a>
               )}
-              {selectedExperience.expanded.offerLetter && (
-                <a href={selectedExperience.expanded.offerLetter} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-transparent border border-[var(--color-text-main)]/20 text-[var(--color-text-main)] rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-text-main)]/5 transition-colors">
+              {(selectedExperience.expanded as any).offerLetter && (
+                <a href={(selectedExperience.expanded as any).offerLetter} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-transparent border border-[var(--color-text-main)]/20 text-[var(--color-text-main)] rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-[var(--color-text-main)]/5 transition-colors">
                   <FileText className="w-4 h-4" /> View Offer Letter
                 </a>
               )}

@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState, useCallback, type ElementType } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { ArrowRight, BrainCircuit, LayoutTemplate, Building2, Lightbulb, Bot, Moon, Sun } from 'lucide-react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Moon, Sun } from 'lucide-react';
 import { MagneticButton } from '../ui/MagneticButton';
-
-// ─── AVATAR CONFIG ───────────────────────────────────────────────
-// Drop your photo into src/assets/ and set the path below.
-// e.g. import avatarSrc from '../assets/rohit.jpg';
-// Then set: const AVATAR_SRC = avatarSrc;
-const AVATAR_SRC = '/avatar.png';
+import { HeroIdCard } from './HeroIdCard';
 
 // Particle system
 function Particles() {
@@ -29,14 +24,14 @@ function Particles() {
     resize();
     window.addEventListener('resize', resize);
 
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
         size: Math.random() * 1.5 + 0.5,
-        alpha: Math.random() * 0.4 + 0.1,
+        alpha: Math.random() * 0.3 + 0.05,
       });
     }
 
@@ -64,59 +59,7 @@ function Particles() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-50" />;
-}
-
-// Orbital ring with icons using trigonometry
-interface TechNode {
-  icon: ElementType;
-  label: string;
-  angle: number;
-}
-
-function OrbitRing({ radius, speed, nodes, counterRotate = false }: {
-  radius: number;
-  speed: number;
-  nodes: TechNode[];
-  counterRotate?: boolean;
-}) {
-  return (
-    <motion.div
-      className="absolute rounded-full border border-[color-mix(in_srgb,var(--color-text-main)_6%,transparent)]"
-      style={{
-        width: radius * 2,
-        height: radius * 2,
-        top: '50%',
-        left: '50%',
-        marginTop: -radius,
-        marginLeft: -radius,
-      }}
-      animate={{ rotate: counterRotate ? -360 : 360 }}
-      transition={{ repeat: Infinity, duration: speed, ease: 'linear' }}
-    >
-      {nodes.map((node, i) => {
-        const angleDeg = node.angle;
-        const angleRad = (angleDeg * Math.PI) / 180;
-        const x = radius + radius * Math.cos(angleRad) - 24;
-        const y = radius + radius * Math.sin(angleRad) - 24;
-        return (
-          <motion.div
-            key={i}
-            className="absolute w-12 h-12 rounded-full bg-[var(--color-secondary)] border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] flex flex-col items-center justify-center shadow-xl shadow-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] cursor-default group"
-            style={{ left: x, top: y }}
-            animate={{ rotate: counterRotate ? 360 : -360 }}
-            transition={{ repeat: Infinity, duration: speed, ease: 'linear' }}
-          >
-            <node.icon className="w-5 h-5 text-[color-mix(in_srgb,var(--color-text-main)_60%,transparent)] group-hover:text-[var(--color-primary)] transition-colors duration-300" />
-            {/* Label tooltip */}
-            <span className="absolute -bottom-7 text-[10px] font-mono text-[color-mix(in_srgb,var(--color-text-main)_40%,transparent)] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-              {node.label}
-            </span>
-          </motion.div>
-        );
-      })}
-    </motion.div>
-  );
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-30" />;
 }
 
 interface HeroProps {
@@ -130,51 +73,18 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
   const heroY = useTransform(scrollY, [0, 900], [0, 280]);
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
 
-  const springCfg = { damping: 30, stiffness: 100 };
-  const avatarX = useSpring(0, springCfg);
-  const avatarY = useSpring(0, springCfg);
-
-  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 }); // percentage
+  const [glowPos, setGlowPos] = useState({ x: 50, y: 50 });
 
   const onMouseMove = useCallback((e: MouseEvent) => {
-    const { clientX, clientY, currentTarget } = e as MouseEvent & { currentTarget: Window };
+    const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-    const nx = (clientX / innerWidth - 0.5) * 2;
-    const ny = (clientY / innerHeight - 0.5) * 2;
-    avatarX.set(nx * 12);
-    avatarY.set(ny * 12);
     setGlowPos({ x: (clientX / innerWidth) * 100, y: (clientY / innerHeight) * 100 });
-  }, [avatarX, avatarY]);
-
-  useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove as any);
-    return () => window.removeEventListener('mousemove', onMouseMove as any);
-  }, [onMouseMove]);
-
-  // Each orbit node = one of Rohit's five core pillars
-  const outerNodes: TechNode[] = [
-    { icon: BrainCircuit,   label: 'AI Engineering',   angle: 0   },
-    { icon: LayoutTemplate, label: 'Full Stack',        angle: 72  },
-    { icon: Building2,      label: 'Architecture',      angle: 144 },
-    { icon: Lightbulb,      label: 'Product Design',    angle: 216 },
-    { icon: Bot,            label: 'Automation',        angle: 288 },
-  ];
-
-  // Orbital radii — responsive to viewport; avatar is ~192px (w-48) on desktop
-  const [orbitRadius, setOrbitRadius] = useState(200);
-
-  useEffect(() => {
-    const updateRadius = () => {
-      const w = window.innerWidth;
-      if (w < 480) setOrbitRadius(110);
-      else if (w < 768) setOrbitRadius(140);
-      else if (w < 1024) setOrbitRadius(170);
-      else setOrbitRadius(200);
-    };
-    updateRadius();
-    window.addEventListener('resize', updateRadius);
-    return () => window.removeEventListener('resize', updateRadius);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener('mousemove', onMouseMove);
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [onMouseMove]);
 
   return (
     <section
@@ -186,7 +96,7 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
       <Particles />
 
       {/* Animated Grid */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.035]"
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.025]"
         style={{
           backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)',
           backgroundSize: '40px 40px',
@@ -195,16 +105,11 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
         }}
       />
 
-      {/* Radial Gradient Base */}
-      <div className="absolute inset-0 z-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 60% at 70% 50%, rgba(168,85,247,0.07) 0%, transparent 70%)' }}
-      />
-
       {/* Cursor-responsive Glow */}
       <div
-        className="absolute inset-0 z-0 pointer-events-none transition-all duration-300"
+        className="absolute inset-0 z-0 pointer-events-none transition-all duration-500"
         style={{
-          background: `radial-gradient(700px circle at ${glowPos.x}% ${glowPos.y}%, rgba(168,85,247,0.08), transparent 50%)`
+          background: `radial-gradient(800px circle at ${glowPos.x}% ${glowPos.y}%, rgba(168,85,247,0.06), transparent 50%)`
         }}
       />
 
@@ -318,58 +223,15 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* ─── RIGHT: Avatar + Orbit ─── */}
+        {/* ─── RIGHT: Draggable ID Card ─── */}
         <motion.div
-          className="relative flex items-center justify-center order-first lg:order-last"
-          style={{ width: orbitRadius * 2 + 100, height: orbitRadius * 2 + 100, minWidth: 200, minHeight: 200 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative flex items-center justify-center lg:-translate-x-32 xl:-translate-x-48"
+          style={{ minWidth: 280, minHeight: 420 }}
         >
-          {/* Outer glow blob behind orbit */}
-          <div className="absolute rounded-full opacity-20 blur-[80px] w-72 h-72"
-            style={{ background: 'radial-gradient(circle, rgba(168,85,247,1) 0%, rgba(124,58,237,0.5) 60%, transparent 100%)' }} />
-
-          {/* Orbit ring with tech icons */}
-          {orbitRadius > 0 && <OrbitRing radius={orbitRadius} speed={35} nodes={outerNodes} />}
-
-          {/* Avatar: parallax + float */}
-          <motion.div
-            style={{ x: avatarX, y: avatarY }}
-            className="relative z-20"
-          >
-            <motion.div
-              animate={{ y: [-8, 8, -8] }}
-              transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}
-              className="relative"
-            >
-              {/* Glow ring */}
-              <div className="absolute -inset-4 rounded-full opacity-30"
-                style={{ background: 'radial-gradient(circle, rgba(168,85,247,0.6) 0%, transparent 70%)', filter: 'blur(20px)' }} />
-
-              {/* Avatar shell — swap AVATAR_SRC above to show your real photo */}
-              <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full border border-[color-mix(in_srgb,var(--color-text-main)_10%,transparent)] overflow-hidden shadow-2xl shadow-[color-mix(in_srgb,var(--color-text-main)_50%,transparent)]"
-                style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--color-text-main) 6%, transparent) 0%, color-mix(in srgb, var(--color-text-main) 2%, transparent) 100%)' }}
-              >
-                {AVATAR_SRC ? (
-                  <img
-                    src={AVATAR_SRC}
-                    alt="Rohit Sharma"
-                    className="w-full h-full object-cover object-top"
-                  />
-                ) : (
-                  /* Monogram placeholder — shown until you add your photo */
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-2"
-                    style={{ background: 'radial-gradient(circle at 40% 30%, rgba(168,85,247,0.12) 0%, transparent 60%)' }}
-                  >
-                    <span className="font-heading text-[4.5rem] font-semibold leading-none select-none"
-                      style={{ color: 'rgba(255,255,255,0.18)' }}
-                    >RS</span>
-                    <span className="text-[9px] font-mono tracking-[0.25em] uppercase"
-                      style={{ color: 'rgba(255,255,255,0.10)' }}
-                    >your photo here</span>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
+          <HeroIdCard containerRef={sectionRef} />
         </motion.div>
       </motion.div>
 
