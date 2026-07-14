@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Home, Briefcase, FolderOpen, BrainCircuit, Mail, ArrowRight, Command } from 'lucide-react';
+import { Search, Home, Briefcase, FolderOpen, History, Mail, ArrowRight, Command, TrendingUp, Cpu, Lightbulb, BookOpen, Award } from 'lucide-react';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -33,11 +33,16 @@ export function CommandPalette({ isOpen, setIsOpen }: CommandPaletteProps) {
   }, [isOpen]);
 
   const commands = [
-    { id: 'home', title: 'Home', desc: 'Back to the top', icon: Home, href: '#home' },
-    { id: 'about', title: 'About', desc: 'Who I am and my mission', icon: Briefcase, href: '#about' },
-    { id: 'product', title: 'AutoFixNow', desc: 'Featured product showcase', icon: FolderOpen, href: '#product' },
-    { id: 'ai', title: 'AI Engineering', desc: 'Intelligent systems & AI work', icon: BrainCircuit, href: '#ai-engineering' },
-    { id: 'contact', title: 'Contact', desc: 'Let\'s build together', icon: Mail, href: '#contact' },
+    { id: 'home', title: 'Home', desc: 'Back to the top — hero & intro', icon: Home, href: '#home' },
+    { id: 'about', title: 'About', desc: 'Who I am, my mission & background', icon: Briefcase, href: '#about' },
+    { id: 'impact', title: 'Impact', desc: 'Key achievements, metrics & GitHub stats', icon: TrendingUp, href: '#impact' },
+    { id: 'capabilities', title: 'Capabilities', desc: 'AI engineering, systems & technical skills', icon: Cpu, href: '#capabilities' },
+    { id: 'projects', title: 'Projects', desc: 'Featured work, side projects & case studies', icon: FolderOpen, href: '#projects' },
+    { id: 'experience', title: 'Experience', desc: 'Professional journey & career timeline', icon: History, href: '#timeline' },
+    { id: 'philosophy', title: 'Philosophy', desc: 'How I think about building software', icon: Lightbulb, href: '#philosophy' },
+    { id: 'learning', title: 'Learning', desc: 'Currently reading, studying & exploring', icon: BookOpen, href: '#learning' },
+    { id: 'certifications', title: 'Certifications', desc: 'Credentials, badges & qualifications', icon: Award, href: '#certifications' },
+    { id: 'contact', title: 'Contact', desc: "Let's build something together", icon: Mail, href: '#contact' },
   ];
 
   const filtered = query
@@ -45,8 +50,12 @@ export function CommandPalette({ isOpen, setIsOpen }: CommandPaletteProps) {
     : commands;
 
   const navigate = (item: typeof commands[0]) => {
-    const el = document.querySelector(item.href);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    const lenis = (window as any).__lenis;
+    if (lenis) {
+      lenis.scrollTo(item.href, { duration: 1.2, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    } else {
+      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+    }
     setIsOpen(false);
   };
 

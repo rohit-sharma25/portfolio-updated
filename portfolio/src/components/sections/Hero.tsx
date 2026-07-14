@@ -118,8 +118,19 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
         style={{ y: heroY, opacity: heroOpacity }}
         className="container relative z-10 max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center min-h-screen py-24"
       >
-        {/* ─── LEFT: Text ─── */}
-        <div className="flex flex-col items-start space-y-8 lg:max-w-[580px]">
+        {/* ─── CARD (first on mobile via order-1) ─── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative flex items-center justify-center lg:-translate-x-32 xl:-translate-x-48 order-1 lg:order-2"
+          style={{ minWidth: 280, minHeight: 420 }}
+        >
+          <HeroIdCard containerRef={sectionRef} />
+        </motion.div>
+
+        {/* ─── TEXT (second on mobile via order-2) ─── */}
+        <div className="flex flex-col items-start space-y-8 lg:max-w-[580px] order-2 lg:order-1">
           {/* Role badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -222,17 +233,6 @@ export function Hero({ theme, toggleTheme }: HeroProps) {
             ))}
           </motion.div>
         </div>
-
-        {/* ─── RIGHT: Draggable ID Card ─── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="relative flex items-center justify-center lg:-translate-x-32 xl:-translate-x-48"
-          style={{ minWidth: 280, minHeight: 420 }}
-        >
-          <HeroIdCard containerRef={sectionRef} />
-        </motion.div>
       </motion.div>
 
       {/* Scroll cue */}

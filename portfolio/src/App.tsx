@@ -69,6 +69,7 @@ function App() {
       touchMultiplier: 2,
     });
     lenisRef.current = lenis;
+    (window as any).__lenis = lenis;
 
     // Connect Lenis to GSAP's ticker as the single update loop
     lenis.on('scroll', ScrollTrigger.update);
@@ -79,6 +80,7 @@ function App() {
 
     return () => {
       lenis.destroy();
+      (window as any).__lenis = undefined;
       gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
   }, []);
