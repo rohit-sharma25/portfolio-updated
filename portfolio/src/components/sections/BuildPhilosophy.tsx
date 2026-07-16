@@ -28,11 +28,10 @@ export function BuildPhilosophy() {
             </h3>
             <div className="space-y-6 text-[var(--color-text-muted)] font-body text-base md:text-lg leading-relaxed">
               <p>
-                I don't write code just to instruct machines; I write code to solve human friction. 
-                Technology at its best should be invisible. It should feel like magic that seamlessly integrates into our daily lives, quietly empowering us to do more, be more, and experience more.
+                I write code to solve human friction. Technology at its best should be invisible — seamlessly empowering us without demanding our attention.
               </p>
               <p>
-                I build because I am deeply curious about how the world works, and deeply unsatisfied with the parts that don't. Every line of code is an opportunity to make someone's day infinitesimally better. That compounding impact is what drives me.
+                I build because I'm curious about how the world works, and unsatisfied with the parts that don't. Every line is a chance to make someone's day better.
               </p>
             </div>
           </motion.div>
@@ -53,10 +52,10 @@ export function BuildPhilosophy() {
             </h3>
             <div className="space-y-6 text-[var(--color-text-muted)] font-body text-base md:text-lg leading-relaxed">
               <p>
-                Design is not just how it looks; it's how it works. I approach engineering from a place of empathy. Before deciding on the architecture, the framework, or the database, I ask: <em className="text-[var(--color-text-main)]">Who is this for, and what are they trying to achieve?</em>
+                Design is how it works. I lead with empathy, asking: <em className="text-[var(--color-text-main)]">Who is this for, and what are they trying to achieve?</em>
               </p>
               <p>
-                I believe in constraints. Constraints breed creativity. They force you to distill a product down to its absolute essence. A well-designed system doesn't have everything—it only has exactly what is needed.
+                Constraints breed creativity. They distill a product to its essence — exactly what's needed, nothing more.
               </p>
             </div>
           </motion.div>
@@ -77,10 +76,10 @@ export function BuildPhilosophy() {
             </h3>
             <div className="space-y-6 text-[var(--color-text-muted)] font-body text-base md:text-lg leading-relaxed">
               <p>
-                I am drawn to complexity that hides behind simplicity. Systems where the backend does heavy lifting—processing data, leveraging AI, routing complex logic—so the frontend can remain perfectly clean, calm, and intuitive.
+                I'm drawn to complexity that hides behind simplicity. Heavy backend lifting so the frontend stays clean, calm, and intuitive.
               </p>
               <p>
-                I love bridging the gap between artificial intelligence and human interaction. Not chatbots that frustrate, but intelligent systems that genuinely understand context, anticipate needs, and augment human capability rather than replacing it.
+                I love bridging AI and human interaction — systems that understand context, anticipate needs, and augment rather than replace.
               </p>
             </div>
           </motion.div>
@@ -101,10 +100,10 @@ export function BuildPhilosophy() {
             </h3>
             <div className="space-y-6 text-[var(--color-text-muted)] font-body text-base md:text-lg leading-relaxed">
               <p>
-                Good software should respect the user's time. It should load instantly, respond naturally, and never demand cognitive load to navigate.
+                Good software respects your time — loads instantly, responds naturally, demands no cognitive overhead.
               </p>
               <p>
-                It should evoke an emotional response. When a user interacts with a product, they should feel a sense of craft. The subtle micro-interactions, the precise typography, the fluid motion—these aren't just aesthetic choices; they are a profound expression of care.
+                It should evoke emotion. Micro-interactions, typography, motion — these aren't just aesthetics. They're a profound expression of care.
               </p>
               <p className="text-[var(--color-text-main)] font-medium pt-4 text-xl">
                 Ultimately, good software doesn't just work. It feels right.

@@ -121,11 +121,15 @@ function App() {
             />
           )}
         </AnimatePresence>
-        <ParallaxSection offset={120}><FeaturedImpact /></ParallaxSection>
+        <div data-ai-context="impact">
+          <ParallaxSection offset={120}><FeaturedImpact /></ParallaxSection>
+        </div>
         
         <StoryConnector text="Every great product starts with a problem." />
         
-        <ParallaxSection offset={80}><About /></ParallaxSection>
+        <div data-ai-context="about">
+          <ParallaxSection offset={80}><About /></ParallaxSection>
+        </div>
         <ParallaxSection offset={80}><EngineeringCapabilities /></ParallaxSection>
         
         <FeaturedProductsCinematic />
@@ -143,16 +147,24 @@ function App() {
         </div>
         
         <StoryConnector text="Experience isn't just time spent, it's problems solved." />
-        <ParallaxSection offset={50}><GitHubStats /></ParallaxSection>
+        <div data-ai-context="github">
+          <ParallaxSection offset={50}><GitHubStats /></ParallaxSection>
+        </div>
         
         <StoryConnector text="How do I think about software?" />
         
-        <ParallaxSection offset={80}><BuildPhilosophy /></ParallaxSection>
-        <ParallaxSection offset={60}><CurrentlyReading /></ParallaxSection>
+        <div data-ai-context="philosophy">
+          <ParallaxSection offset={80}><BuildPhilosophy /></ParallaxSection>
+        </div>
+        <div data-ai-context="learning">
+          <ParallaxSection offset={60}><CurrentlyReading /></ParallaxSection>
+        </div>
         
         <StoryConnector text="Learning never stops." />
         
-        <ParallaxSection offset={100}><Certifications /></ParallaxSection>
+        <div data-ai-context="certifications">
+          <ParallaxSection offset={100}><Certifications /></ParallaxSection>
+        </div>
         
         <StoryConnector text="Now let's build something meaningful." />
         

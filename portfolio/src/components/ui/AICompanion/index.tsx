@@ -6,7 +6,7 @@ import { useAIContext } from '../../../hooks/useAIContext';
 import { usePortfolioTour } from '../../../hooks/usePortfolioTour';
 import type { ContextAction } from '../../../lib/ai/responseEngine';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play } from 'lucide-react';
+
 
 export function AICompanion() {
   const { currentContext } = useAIContext();
@@ -90,18 +90,26 @@ export function AICompanion() {
         currentContext={currentContext}
       />
       
-      {/* Global Tour Button (Can be placed anywhere, currently floating bottom left) */}
+      {/* Global Tour Button */}
       {!tour.isActive && (
         <motion.button
           onClick={tour.startTour}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="hidden sm:flex fixed bottom-8 left-8 z-[80] items-center gap-2 px-4 py-2 bg-purple-600/20 border border-purple-500/30 text-purple-300 rounded-full text-sm font-medium hover:bg-purple-600/40 transition-colors backdrop-blur-md"
+          initial={{ opacity: 0, x: -30, scale: 0.9 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.97 }}
+          className="hidden sm:flex fixed bottom-8 left-8 z-[80] items-center px-5 py-3 rounded-full text-sm font-medium backdrop-blur-xl transition-all duration-300"
+          style={{
+            background: 'linear-gradient(135deg, rgba(168,85,247,0.25), rgba(124,58,237,0.15))',
+            border: '1px solid rgba(168,85,247,0.35)',
+            color: '#d8b4fe',
+          }}
         >
-          <Play className="w-4 h-4" />
-          Take Portfolio Tour
+          <span className="relative font-heading tracking-wide">Take Portfolio Tour</span>
         </motion.button>
       )}
+
+
     </>
   );
 }
