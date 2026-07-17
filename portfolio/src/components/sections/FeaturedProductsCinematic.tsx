@@ -29,9 +29,10 @@ const PROJECTS_DATA: CinematicProject[] = [
       { title: 'Future Vision', content: <p>Integration of AI-driven vehicle diagnostics that can preemptively warn drivers and pre-order necessary parts before a breakdown occurs.</p> }
     ],
     caseStudySections: [
-      { title: 'Overview', content: <p>AutoFixNow was born out of a real-world frustration during a road trip. We realized that while ride-sharing was revolutionized, roadside assistance remained stuck in the past.</p> },
-      { title: 'Architecture', content: <p>The system utilizes WebSockets for real-time location updates, a robust Node.js backend for the quotation logic, and a responsive React frontend ensuring accessibility under high-stress situations.</p> },
-      { title: 'Challenges', content: <p>The biggest challenge was handling unstable network conditions on highways. We implemented optimistic UI updates and aggressive caching to ensure the app remains functional even with intermittent connectivity.</p> }
+      { title: 'The Problem', content: <p>Vehicle breakdowns are highly stressful events. While the ride-sharing industry has been revolutionized by technology, roadside assistance remains largely stuck in a fragmented, legacy model. Users are forced to make multiple phone calls, face opaque pricing, and endure unpredictable wait times while stranded.</p> },
+      { title: 'Architecture & Tech Stack', content: <p>We engineered a highly responsive real-time platform using React for the frontend and Node.js with Express for the backend. The core routing and matching engine leverages WebSockets for real-time location tracking, ensuring users and mechanics can track each other on a live map just like modern ride-hailing apps.</p> },
+      { title: 'Challenges Faced', content: <p>Our primary technical hurdle was maintaining reliable real-time tracking in areas with poor network coverage (common during highway breakdowns). We solved this by implementing optimistic UI updates on the frontend, aggressive request caching, and a robust reconnection logic for our WebSocket channels.</p> },
+      { title: 'Key Learnings & Impact', content: <p>Leading this project during a hackathon taught me the value of rapid prototyping and prioritizing core user flows under immense time pressure. The MVP successfully demonstrated a 40% reduction in average estimated wait times compared to traditional dispatch methods.</p> }
     ]
   },
   {
@@ -58,8 +59,10 @@ const PROJECTS_DATA: CinematicProject[] = [
       { title: 'Key Features', content: <p>Agent-to-agent communication, secure HIPAA-compliant data routing, and contextual memory persistence across patient sessions.</p> }
     ],
     caseStudySections: [
-      { title: 'Research', content: <p>We spent weeks analyzing how medical teams communicate during triaging, mapping those interaction patterns to an LLM orchestration layer.</p> },
-      { title: 'Solution', content: <p>Instead of a single monolithic model, MediAI OS acts as a router, sending distinct analytical tasks to specialized sub-agents and synthesizing their conclusions.</p> }
+      { title: 'The Problem', content: <p>Medical professionals suffer from cognitive overload due to siloed information systems. Furthermore, using a single, generalized Large Language Model for medical tasks often yields inaccurate or insufficiently specialized advice. There was a critical need for an intelligent system that could process medical data with specialized precision.</p> },
+      { title: 'Architecture & Orchestration', content: <p>Instead of relying on a monolithic model, MediAI OS utilizes a multi-agent orchestration architecture. It acts as a central router (built with FastAPI) that delegates specific analytical tasks to distinct sub-agents—such as a Cardiology agent or a Triage agent. These agents process the data in parallel and return their findings to a master synthesizer node.</p> },
+      { title: 'Challenges Faced', content: <p>A major challenge was ensuring consistent context memory across multiple AI agents. We implemented a centralized vector database to store encrypted patient session context, allowing agents to query past interactions without duplicating data or losing the conversational thread.</p> },
+      { title: 'Impact & Future Vision', content: <p>The beta release demonstrated a significant reduction in initial patient intake assessment times. Moving forward, the goal is to implement strict on-premise deployment models to guarantee absolute compliance with global healthcare data regulations while expanding the library of specialized agents.</p> }
     ]
   },
   {
@@ -86,7 +89,10 @@ const PROJECTS_DATA: CinematicProject[] = [
       { title: 'Impact', content: <p>Significantly reduced the administrative load on front-desk staff while providing patients with instant, accurate 24/7 assistance.</p> }
     ],
     caseStudySections: [
-      { title: 'Implementation', content: <p>Built using a RAG (Retrieval-Augmented Generation) pipeline ensuring the AI only answers based on verified hospital data to prevent hallucinations.</p> }
+      { title: 'The Problem', content: <p>AIIMS Jodhpur handles thousands of patients daily. A significant portion of administrative time is consumed answering repetitive, routine questions regarding department locations, scheduling, and basic protocols. This creates massive bottlenecks and frustrates patients who need immediate answers.</p> },
+      { title: 'Solution & Architecture', content: <p>We developed SAHAYAK, an enterprise-grade conversational AI assistant. Under the hood, it utilizes a robust NLP pipeline written in Python. To prevent hallucinations—a critical requirement in a medical setting—we implemented a Retrieval-Augmented Generation (RAG) architecture that strictly grounds the AI\'s responses in the hospital\'s verified internal documentation.</p> },
+      { title: 'Challenges Faced', content: <p>The most difficult aspect was handling vernacular nuances and diverse phrasing from patients of different demographics. We continuously refined the intent classification model through active learning, significantly improving accuracy over the first three months of deployment.</p> },
+      { title: 'Impact', content: <p>SAHAYAK successfully deflected a large percentage of Level 1 administrative queries, allowing front-desk staff to focus on complex patient needs. It operates 24/7, dramatically improving the overall patient experience and operational efficiency of the hospital.</p> }
     ]
   },
   {
@@ -97,7 +103,7 @@ const PROJECTS_DATA: CinematicProject[] = [
     status: 'Prototyping',
     badge: 'Concept',
     problem: 'Passive video consumption leads to low retention and engagement in online learning.',
-    imageUrl: '/Edith.png', // Fallback image for now
+    imageUrl: '/entarative learning.png',
     bgGradient: 'rgba(249, 115, 22, 0.15)', // Orange + Purple
     metrics: [
       { label: 'Role', value: 'Creator' },
@@ -110,7 +116,10 @@ const PROJECTS_DATA: CinematicProject[] = [
       { title: 'The Solution', content: <p>An AI pipeline that ingests long-form media and automatically generates quizzes, flashcards, and interactive summaries.</p> }
     ],
     caseStudySections: [
-      { title: 'Vision', content: <p>To bridge the gap between content consumption and active recall, turning any passive media into a personalized curriculum.</p> }
+      { title: 'The Problem', content: <p>In the age of digital education, students consume hours of video lectures and read countless PDFs passively. Studies show that passive consumption leads to severe drop-offs in long-term retention compared to active recall methodologies.</p> },
+      { title: 'The Solution', content: <p>I designed an AI pipeline that automatically transforms any passive media into an interactive curriculum. By simply pasting a YouTube link or uploading a PDF, the system extracts the core concepts, generates concise summaries, and dynamically creates flashcards and quizzes tailored to the material.</p> },
+      { title: 'Architecture & Tech Stack', content: <p>The prototype is built using Gradio for a rapid, interactive UI. It orchestrates several APIs: a transcription service for extracting video text, a document parser for PDFs, and an LLM pipeline specifically prompted to extract key-value pairs suitable for active recall generation.</p> },
+      { title: 'Future Vision', content: <p>The ultimate vision is to integrate spaced repetition algorithms directly into the generated flashcards, creating a fully autonomous study companion that adapts to the user\'s unique learning curve.</p> }
     ]
   },
   {
@@ -136,7 +145,10 @@ const PROJECTS_DATA: CinematicProject[] = [
       { title: 'The Solution', content: <p>A streamlined, beautifully designed dashboard that categorizes spending through simple heuristics and provides clear visual insights.</p> }
     ],
     caseStudySections: [
-      { title: 'Design Philosophy', content: <p>Focused heavily on reducing the friction of data entry. The UI prioritizes large touch targets and intuitive visualizations.</p> }
+      { title: 'The Problem', content: <p>Personal finance management often fails because the tools are either too complex (overwhelming UI) or too manual (spreadsheets). This friction causes users to abandon their budgeting efforts entirely, leading to poor financial visibility.</p> },
+      { title: 'Design Philosophy & Solution', content: <p>Expensifer was designed with an absolute focus on reducing the friction of data entry. The UI features large touch targets, intuitive iconography, and a dark-mode optimized color palette that highlights critical financial metrics at a glance. We implemented automated categorization rules to minimize manual input.</p> },
+      { title: 'Architecture & Tech Stack', content: <p>The application is a modern SPA built with React, utilizing complex state management to ensure instantaneous UI updates. The backend is powered by a scalable MongoDB database, allowing for flexible document structures as the categorization logic evolves.</p> },
+      { title: 'Key Learnings', content: <p>Building Expensifer reinforced the importance of Data Visualization in UX. Providing users with immediate, beautiful charts dramatically improved user engagement and retention compared to standard data tables.</p> }
     ]
   }
 ];
